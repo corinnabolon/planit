@@ -3,6 +3,7 @@ import BaseController from "../utils/BaseController.js";
 import { projectsService } from "../services/ProjectsService.js";
 import { sprintsService } from "../services/SprintsService.js";
 import { tasksService } from "../services/TasksService.js";
+import { notesService } from "../services/NotesService.js";
 
 export class ProjectsController extends BaseController {
 
@@ -15,6 +16,7 @@ export class ProjectsController extends BaseController {
       .get('/:projectId', this.getProjectById)
       .get('/:projectId/sprints', this.getSprintsByProjectId)
       .get('/:projectId/tasks', this.getTasksByProjectId)
+      .get('/:projectId/notes', this.getNotesByProjectId)
       .delete('/:projectId', this.removeProject)
   }
 
@@ -65,6 +67,16 @@ export class ProjectsController extends BaseController {
       let projectId = req.params.projectId
       let tasks = await tasksService.getTasksByProjectId(projectId)
       return res.send(tasks)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getNotesByProjectId(req, res, next) {
+    try {
+      let projectId = req.params.projectId
+      let notes = await notesService.getNotesByProjectId(projectId)
+      return res.send(notes)
     } catch (error) {
       next(error)
     }
