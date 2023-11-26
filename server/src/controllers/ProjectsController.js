@@ -2,6 +2,7 @@ import { Auth0Provider } from "@bcwdev/auth0provider";
 import BaseController from "../utils/BaseController.js";
 import { projectsService } from "../services/ProjectsService.js";
 import { sprintsService } from "../services/SprintsService.js";
+import { tasksService } from "../services/TasksService.js";
 
 export class ProjectsController extends BaseController {
 
@@ -13,6 +14,7 @@ export class ProjectsController extends BaseController {
       .get('', this.getAllMyProjects)
       .get('/:projectId', this.getProjectById)
       .get('/:projectId/sprints', this.getSprintsByProjectId)
+      .get('/:projectId/tasks', this.getTasksByProjectId)
       .delete('/:projectId', this.removeProject)
   }
 
@@ -53,6 +55,16 @@ export class ProjectsController extends BaseController {
       let projectId = req.params.projectId
       let sprints = await sprintsService.getSprintsByProjectId(projectId)
       return res.send(sprints)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getTasksByProjectId(req, res, next) {
+    try {
+      let projectId = req.params.projectId
+      let tasks = await tasksService.getTasksByProjectId(projectId)
+      return res.send(tasks)
     } catch (error) {
       next(error)
     }

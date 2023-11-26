@@ -24,7 +24,7 @@ class SprintsService {
     if (sprint.creatorId.toString() != userId) {
       throw new Forbidden("Not your sprint to delete")
     }
-    sprint.remove()
+    await sprint.remove()
     return `${sprintId} deleted`
   }
 

@@ -31,7 +31,7 @@ class ProjectsService {
     if (project.creatorId.toString() != userId) {
       throw new Forbidden(`Not your project to delete`)
     }
-    project.remove()
+    await project.remove()
     return `${projectId} has been deleted`
   }
 
