@@ -11,8 +11,8 @@ export class ProjectsController extends BaseController {
     super('api/projects')
     this.router
       .use(Auth0Provider.getAuthorizedUserInfo)
-      .post('', this.createProject)
       .get('', this.getAllMyProjects)
+      .post('', this.createProject)
       .get('/:projectId', this.getProjectById)
       .get('/:projectId/sprints', this.getSprintsByProjectId)
       .get('/:projectId/tasks', this.getTasksByProjectId)
