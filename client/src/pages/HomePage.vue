@@ -1,6 +1,20 @@
 <template>
-  <div>
-    {{ projects[0] }}
+  <div v-if="account.id">
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectOffcanvas"
+      aria-controls="projectOffcanvas">
+      Button with data-bs-target
+    </button>
+    <!-- <p>Projects</p>
+    <p>A list of all the projects for {{ account.email }}</p>
+    <div class="d-flex justify-content-around">
+      <p>Name</p>
+      <p>Members</p>
+      <p>Started</p>
+    </div> -->
+    <div>
+      <ProjectListComponent />
+
+    </div>
   </div>
 </template>
 
@@ -9,19 +23,20 @@ import { watch, computed } from "vue"
 import Pop from "../utils/Pop.js"
 import { projectsService } from "../services/ProjectsService.js"
 import { AppState } from "../AppState.js";
+import { logger } from "../utils/Logger.js";
 
 
 export default {
   setup() {
     let account = computed(() => AppState.account)
+    let projects = computed(() => AppState.projects)
 
 
     watch(
       account,
       () => {
         getProjects();
-      },
-      { immediate: true }
+      }
     );
 
     async function getProjects() {
@@ -33,7 +48,8 @@ export default {
     }
 
     return {
-      projects: computed(() => AppState.projects)
+      account,
+      projects,
     }
   }
 }
