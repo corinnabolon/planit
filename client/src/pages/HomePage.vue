@@ -1,20 +1,18 @@
 <template>
-  <div v-if="account.id">
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectOffcanvas"
-      aria-controls="projectOffcanvas">
-      See Your Projects
-    </button>
-    <!-- <p>Projects</p>
-    <p>A list of all the projects for {{ account.email }}</p>
-    <div class="d-flex justify-content-around">
-      <p>Name</p>
-      <p>Members</p>
-      <p>Started</p>
-    </div> -->
-    <div>
-      <ProjectListComponent />
-
-    </div>
+  <div class="container-fluid">
+    <section class="row">
+      <div class="col-1">
+        <div v-if="account.id">
+          <button class="btn btn-primary fs-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectOffcanvas"
+            aria-controls="projectOffcanvas">
+            P
+          </button>
+        </div>
+      </div>
+      <div class="col-11">
+        <!-- //Basic account info here? -->
+      </div>
+    </section>
   </div>
 </template>
 
@@ -30,6 +28,7 @@ export default {
   setup() {
     let account = computed(() => AppState.account)
     let projects = computed(() => AppState.projects)
+    let defaultProject = computed(() => AppState.projects[0])
 
     onMounted(() => {
       getProjects();
@@ -56,6 +55,7 @@ export default {
     return {
       account,
       projects,
+      defaultProject,
     }
   }
 }

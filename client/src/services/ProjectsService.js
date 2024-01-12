@@ -32,6 +32,7 @@ class ProjectsService {
   }
   
   clearDataForProjectPage() {
+    logger.log("Triggered?")
     AppState.project = null
     AppState.sprints = []
   }

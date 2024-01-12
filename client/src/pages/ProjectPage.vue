@@ -1,20 +1,34 @@
 <template>
-  <div v-if="project" class="d-flex align-items-center mt-3">
-    <div>
-      {{ project.name }} {{ project.id }}
-    </div>
-    <button class="btn btn-success ms-5" v-if="project.creatorId == account.id" @click="removeProject">Delete
-      Project</button>
-  </div>
-  <div v-for="sprint in sprints" :key="sprint.id" class="px-1">
-    <SprintComponent :sprintProp="sprint" />
+  <div class="container-fluid">
+    <section class="row">
+      <div class="col-1">
+        <div v-if="account.id">
+          <button class="btn btn-primary fs-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectOffcanvas"
+            aria-controls="projectOffcanvas">
+            P
+          </button>
+        </div>
+      </div>
+      <div class="col-11">
+        <div v-if="project" class="d-flex align-items-center mt-3">
+          <div>
+            {{ project.name }} {{ project.id }}
+          </div>
+          <button class="btn btn-success ms-5" v-if="project.creatorId == account.id" @click="removeProject">Delete
+            Project</button>
+        </div>
+        <div v-for="sprint in sprints" :key="sprint.id" class="px-1">
+          <SprintComponent :sprintProp="sprint" />
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 
 <script>
 import { AppState } from '../AppState';
-import { computed, reactive, onMounted, watch, ref } from 'vue';
+import { computed, reactive, onMounted, watch, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Pop from "../utils/Pop.js";
 import { projectsService } from "../services/ProjectsService.js";
@@ -24,7 +38,7 @@ export default {
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const watchableProjectId = ref(route.params.projectId)
+    const watchableProjectId = computed(() => route.params.projectId)
 
     watch(watchableProjectId, () => {
       clearDataForProjectPage()
@@ -41,7 +55,6 @@ export default {
         Pop.error(error)
       }
     }
-
 
     async function getProjectById(projectId) {
       try {

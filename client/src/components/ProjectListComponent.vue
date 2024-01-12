@@ -13,11 +13,11 @@
         <p>Started</p>
       </div>
       <div v-for="project in projects" :key="project.id" class="d-flex justify-content-between">
-        <router-link :title="`Go to ${project.name}'s page`"
-          :to="{ name: 'ProjectDetails', params: { projectId: project.id } }">
-          <p>{{ project.name }}</p>
-          <p>{{ project.createdAt.toLocaleDateString() }}</p>
-        </router-link>
+        <!-- <router-link :title="`Go to ${project.name}'s page`"
+          :to="{ name: 'ProjectDetails', params: { projectId: project.id } }"> -->
+        <p @click="goProjectDetails(`${project.id}`)" role="button">{{ project.name }}</p>
+        <p>{{ project.createdAt.toLocaleDateString() }}</p>
+        <!-- </router-link> -->
       </div>
       <div class="dropdown mt-3">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
@@ -39,14 +39,23 @@ import { AppState } from '../AppState';
 import { computed, reactive, onMounted, watch } from 'vue';
 import Pop from "../utils/Pop.js";
 import { projectsService } from "../services/ProjectsService.js";
+import { Offcanvas } from "bootstrap";
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
+    const router = useRouter()
 
 
     return {
       account: computed(() => AppState.account),
-      projects: computed(() => AppState.projects)
+      projects: computed(() => AppState.projects),
+      router,
+
+      goProjectDetails(projectId) {
+        router.push({ name: 'ProjectDetails', params: { projectId: projectId } })
+        Offcanvas.getOrCreateInstance("#projectOffcanvas").hide()
+      }
     }
   }
 };
