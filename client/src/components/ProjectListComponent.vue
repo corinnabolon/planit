@@ -36,10 +36,14 @@
 
 <script>
 import { AppState } from '../AppState';
-import { computed, reactive, onMounted } from 'vue';
+import { computed, reactive, onMounted, watch } from 'vue';
+import Pop from "../utils/Pop.js";
+import { projectsService } from "../services/ProjectsService.js";
 
 export default {
   setup() {
+
+
     return {
       account: computed(() => AppState.account),
       projects: computed(() => AppState.projects)

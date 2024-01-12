@@ -2,7 +2,7 @@
   <div v-if="account.id">
     <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectOffcanvas"
       aria-controls="projectOffcanvas">
-      Button with data-bs-target
+      See Your Projects
     </button>
     <!-- <p>Projects</p>
     <p>A list of all the projects for {{ account.email }}</p>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { watch, computed } from "vue"
+import { watch, computed, onMounted } from "vue"
 import Pop from "../utils/Pop.js"
 import { projectsService } from "../services/ProjectsService.js"
 import { AppState } from "../AppState.js";
@@ -31,6 +31,9 @@ export default {
     let account = computed(() => AppState.account)
     let projects = computed(() => AppState.projects)
 
+    onMounted(() => {
+      getProjects();
+    })
 
     watch(
       account,
@@ -41,7 +44,10 @@ export default {
 
     async function getProjects() {
       try {
-        await projectsService.getProjects()
+        if (AppState.account) {
+          projectsService.clearAllProjects()
+          await projectsService.getProjects()
+        }
       } catch (error) {
         Pop.error(error)
       }
