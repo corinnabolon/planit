@@ -7,8 +7,12 @@ export const AppState = reactive({
   account: {},
   /** @type {import('./models/Project.js').Project[]} */
   projects: [],
-    /** @type {import('./models/Project.js').Project | null} */
+  /** @type {import('./models/Project.js').Project | null} */
   project: null,
-      /** @type {import('./models/Sprint.js').Sprint[]} */
-  sprints: []
+  /** @type {import('./models/Sprint.js').Sprint[]} */
+  sprints: [],
+  /** @type {import('./models/Sprint.js').Sprint} */
+  activeSprint: null,
+  /** @type {import('./models/Sprint.js').Task[]} */
+  tasks: [],
 })

@@ -17,9 +17,11 @@
           <button class="btn btn-success ms-5" v-if="project.creatorId == account.id" @click="removeProject">Delete
             Project</button>
         </div>
-        <div v-for="sprint in sprints" :key="sprint.id" class="px-1">
-          <SprintComponent :sprintProp="sprint" />
-        </div>
+        <section class="row">
+          <div v-for="sprint in sprints" :key="sprint.id" class="col-12 px-1">
+            <SprintComponent :sprintProp="sprint" />
+          </div>
+        </section>
       </div>
     </section>
   </div>
@@ -44,6 +46,7 @@ export default {
       clearDataForProjectPage()
       getProjectById(watchableProjectId.value)
       getSprintsByProjectId(watchableProjectId.value)
+      getTasksByProjectId(watchableProjectId.value)
     },
       { immediate: true }
     );
@@ -72,6 +75,14 @@ export default {
       }
     }
 
+    async function getTasksByProjectId(projectId) {
+      try {
+        await projectsService.getTasksByProjectId(projectId)
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
     return {
       watchableProjectId,
       project: computed(() => AppState.project),
@@ -91,7 +102,8 @@ export default {
         } catch (error) {
           Pop.error(error)
         }
-      }
+      },
+
 
     }
   }

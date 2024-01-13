@@ -3,6 +3,7 @@ import { Project } from "../models/Project.js";
 import { logger } from "../utils/Logger.js";
 import { api } from "./AxiosService.js";
 import { Sprint } from "../models/Sprint.js";
+import { Task } from "../models/Task.js"
 
 class ProjectsService {
 
@@ -21,6 +22,11 @@ class ProjectsService {
     AppState.sprints = res.data.map(sprintPojo => new Sprint(sprintPojo))
   }
 
+  async getTasksByProjectId(projectId) {
+    const res = await api.get(`api/projects/${projectId}/tasks/`)
+    AppState.tasks = res.data.map(taskPojo => new Task(taskPojo))
+  }
+
   async removeProject(projectId) {
     const res = await api.delete(`api/projects/${projectId}`)
     const foundProject = AppState.projects.find(project => projectId == project.id)
@@ -32,7 +38,6 @@ class ProjectsService {
   }
   
   clearDataForProjectPage() {
-    logger.log("Triggered?")
     AppState.project = null
     AppState.sprints = []
   }

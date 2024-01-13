@@ -6,6 +6,7 @@
     <router-view />
   </main>
   <ProjectListComponent />
+  <CreateTaskModal />
 </template>
 
 <script>
@@ -13,6 +14,7 @@ import { computed } from 'vue'
 import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
 import ProjectListComponent from './components/ProjectListComponent.vue'
+import CreateTaskModal from "./components/CreateTaskModal.vue"
 
 export default {
   setup() {
@@ -20,7 +22,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar, ProjectListComponent }
+  components: { Navbar, ProjectListComponent, CreateTaskModal }
 }
 </script>
 <style lang="scss">

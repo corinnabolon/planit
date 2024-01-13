@@ -13,11 +13,8 @@
         <p>Started</p>
       </div>
       <div v-for="project in projects" :key="project.id" class="d-flex justify-content-between">
-        <!-- <router-link :title="`Go to ${project.name}'s page`"
-          :to="{ name: 'ProjectDetails', params: { projectId: project.id } }"> -->
         <p @click="goProjectDetails(`${project.id}`)" role="button">{{ project.name }}</p>
         <p>{{ project.createdAt.toLocaleDateString() }}</p>
-        <!-- </router-link> -->
       </div>
       <div class="dropdown mt-3">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
