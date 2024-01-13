@@ -23,7 +23,15 @@ export default {
     return {
       sprints: computed(() => AppState.sprints),
       sprintNumber: computed(() => AppState.sprints.findIndex(sprint => sprint.id == props.sprintProp.id)),
-      tasks: computed(() => AppState.tasks),
+      tasks: computed(() => {
+        let movesPerSprint = []
+        AppState.tasks.forEach((task) => {
+          if (task.sprintId == props.sprintProp.id) {
+            movesPerSprint.push(task)
+          }
+        })
+        return movesPerSprint
+      }),
 
       setActiveSprint(sprintId) {
         sprintsService.setActiveSprint(sprintId)

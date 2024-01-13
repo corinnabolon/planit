@@ -47,9 +47,21 @@ export default {
       getProjectById(watchableProjectId.value)
       getSprintsByProjectId(watchableProjectId.value)
       getTasksByProjectId(watchableProjectId.value)
+      getProjects()
     },
       { immediate: true }
     );
+
+    async function getProjects() {
+      try {
+        if (AppState.account) {
+          projectsService.clearAllProjects()
+          await projectsService.getProjects()
+        }
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
 
     async function clearDataForProjectPage() {
       try {
