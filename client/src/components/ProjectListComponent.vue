@@ -39,9 +39,14 @@ export default {
       projects: computed(() => AppState.projects),
       router,
 
-      goProjectDetails(projectId) {
-        router.push({ name: 'ProjectDetails', params: { projectId: projectId } })
-        Offcanvas.getOrCreateInstance("#projectOffcanvas").hide()
+      async goProjectDetails(projectId) {
+        try {
+          router.push({ name: 'ProjectDetails', params: { projectId: projectId } })
+          Offcanvas.getOrCreateInstance("#projectOffcanvas").hide()
+          await projectsService.getProjectById(projectId)
+        } catch (error) {
+          Pop.error(error)
+        }
       }
     }
   }

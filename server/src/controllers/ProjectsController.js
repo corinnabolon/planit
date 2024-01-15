@@ -17,6 +17,7 @@ export class ProjectsController extends BaseController {
       .get('/:projectId/sprints', this.getSprintsByProjectId)
       .get('/:projectId/tasks', this.getTasksByProjectId)
       .get('/:projectId/notes', this.getNotesByProjectId)
+      .put('/:projectId', this.editProject)
       .delete('/:projectId', this.removeProject)
   }
 
@@ -77,6 +78,18 @@ export class ProjectsController extends BaseController {
       let projectId = req.params.projectId
       let notes = await notesService.getNotesByProjectId(projectId)
       return res.send(notes)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async editProject(req, res, next) {
+    try {
+      let projectData = req.body
+      let projectId = req.params.projectId
+      let userId = req.userInfo.id
+      let project = await projectsService.editProject(projectData, projectId, userId)
+      return res.send(project)
     } catch (error) {
       next(error)
     }

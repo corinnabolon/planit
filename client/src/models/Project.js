@@ -8,6 +8,7 @@ export class Project {
     this.createdAt = new Date(data.createdAt)
     this.updatedAt = new Date(data.updatedAt)
     this.creator = data.creator
+    this.isLastEdited = data.isLastEdited
   }
   
 }

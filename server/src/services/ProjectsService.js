@@ -23,6 +23,22 @@ class ProjectsService {
     return project
   }
 
+  async editProject(projectData, projectId, userId) {
+    let project = await dbContext.Projects.findById(projectId)
+    if (!project) {
+      throw new BadRequest(`${projectId} is not a valid project ID`)
+    }
+    if (project.creatorId.toString() != userId) {
+      throw new Forbidden("Not your project to edit")
+    }
+    project.name = projectData.name || project.name
+    project.description = projectData.description || project.description
+    project.isLastEdited = projectData.isLastEdited != undefined ? projectData.isLastEdited : project.isLastEdited
+    await project.save()
+    return project
+  }
+
+
   async removeProject(projectId, userId) {
     let project = await dbContext.Projects.findById(projectId)
     if (!project) {

@@ -4,6 +4,7 @@ export const ProjectSchema = new Schema(
   {
     name: { type: String, required: true, maxLength: 50 },
     description: { type: String, required: true, maxLength: 1000 },
+    isLastEdited: { type: Boolean, required: true, default: false },
     creatorId: {
       type: Schema.Types.ObjectId, ref: "Account", required: true
     }

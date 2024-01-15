@@ -22,6 +22,7 @@
             <SprintComponent :sprintProp="sprint" />
           </div>
         </section>
+        <p class="text-danger">Last edited project: {{ lastEditedProject }}</p>
       </div>
     </section>
   </div>
@@ -100,6 +101,7 @@ export default {
       project: computed(() => AppState.project),
       sprints: computed(() => AppState.sprints),
       account: computed(() => AppState.account),
+      lastEditedProject: computed(() => AppState.lastEditedProject),
 
       async removeProject() {
         try {

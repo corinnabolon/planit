@@ -11,6 +11,7 @@
       </div>
       <div class="col-11">
         <!-- //Basic account info here? -->
+
       </div>
     </section>
   </div>
@@ -22,22 +23,26 @@ import Pop from "../utils/Pop.js"
 import { projectsService } from "../services/ProjectsService.js"
 import { AppState } from "../AppState.js";
 import { logger } from "../utils/Logger.js";
+import { useRouter } from 'vue-router';
 
 
 export default {
   setup() {
+    const router = useRouter()
     let account = computed(() => AppState.account)
     let projects = computed(() => AppState.projects)
     let defaultProject = computed(() => AppState.projects[0])
 
     onMounted(() => {
       getProjects();
+      goLastProject();
     })
 
     watch(
       account,
       () => {
         getProjects();
+        goLastProject();
       }
     );
 
@@ -52,7 +57,15 @@ export default {
       }
     }
 
+    async function goLastProject() {
+      await projectsService.getLastProject()
+      logger.log("lastEditedProject", AppState.lastEditedProject)
+      let projectId = AppState.lastEditedProject.id
+      router.push({ name: 'ProjectDetails', params: { projectId: projectId } })
+    }
+
     return {
+      router,
       account,
       projects,
       defaultProject,
