@@ -7,6 +7,7 @@
   </main>
   <ProjectListComponent />
   <CreateTaskModal />
+  <CreateSprintModal />
 </template>
 
 <script>
@@ -15,6 +16,7 @@ import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
 import ProjectListComponent from './components/ProjectListComponent.vue'
 import CreateTaskModal from "./components/CreateTaskModal.vue"
+import CreateSprintModal from "./components/CreateSprintModal.vue"
 
 export default {
   setup() {

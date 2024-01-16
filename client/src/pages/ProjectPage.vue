@@ -18,6 +18,15 @@
             Project</button>
         </div>
         <section class="row">
+          <div class="col-12 d-flex justify-content-between my-5">
+            <div>
+              <p class="md-0">Sprints</p>
+              <p>Group your tasks into sprints for over-arching collections for better organization.</p>
+            </div>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createSprintModal">Add Sprint</button>
+          </div>
+        </section>
+        <section class="row">
           <div v-for="sprint in sprints" :key="sprint.id" class="col-12 px-1">
             <SprintComponent :sprintProp="sprint" />
           </div>

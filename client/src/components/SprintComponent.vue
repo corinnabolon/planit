@@ -1,12 +1,18 @@
 <template>
-  <div class="d-flex justify-content-evenly">
+  <div class="d-flex justify-content-between fs-4">
     <p v-if="sprints">S{{ sprintNumber + 1 }} - {{ sprintProp.name }}</p>
-    <p @click="setActiveSprint(`${sprintProp.id}`)" role="button" data-bs-toggle="modal"
-      data-bs-target="#createTaskModal">Add Task</p>
+    <div class="d-flex">
+      <p @click="setActiveSprint(`${sprintProp.id}`)" role="button" data-bs-toggle="modal"
+        data-bs-target="#createTaskModal" class="me-4">Add Task</p>
+      <p v-if="completedTasks && tasks">{{ completedTasks.length }} / {{ tasks.length }} Tasks
+        Complete</p>
+    </div>
   </div>
-  <div v-if="tasks">
-    Tasks: {{ tasks }}
-  </div>
+  <section class="row">
+    <div v-for="task in tasks" :key="task.id" class="col-12">
+      <TaskComponent :taskProp="task" />
+    </div>
+  </section>
 </template>
 
 
@@ -24,20 +30,32 @@ export default {
       sprints: computed(() => AppState.sprints),
       sprintNumber: computed(() => AppState.sprints.findIndex(sprint => sprint.id == props.sprintProp.id)),
       tasks: computed(() => {
-        let movesPerSprint = []
+        let tasksPerSprint = []
         AppState.tasks.forEach((task) => {
           if (task.sprintId == props.sprintProp.id) {
-            movesPerSprint.push(task)
+            tasksPerSprint.push(task)
           }
         })
-        return movesPerSprint
+        return tasksPerSprint
+      }),
+
+      completedTasks: computed(() => {
+        let completedTasksPerSprint = []
+        AppState.tasks.forEach((task) => {
+          if (task.sprintId == props.sprintProp.id && task.isComplete == true) {
+            completedTasksPerSprint.push(task)
+          }
+        })
+        return completedTasksPerSprint
       }),
 
       setActiveSprint(sprintId) {
         sprintsService.setActiveSprint(sprintId)
       }
     }
-  }
+
+  },
+
 };
 </script>
 
