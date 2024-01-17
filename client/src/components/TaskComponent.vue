@@ -17,7 +17,8 @@
         <p>Created - {{ taskProp.createdAt.toDateString() }}</p>
       </div>
       <div class="d-flex mb-5">
-        <div class="d-flex">
+        <div @click="setActives" class="d-flex" type="button" data-bs-toggle="offcanvas" data-bs-target="#notesOffcanvas"
+          aria-controls="notesOffcanvas">
           <p>{{ notes.length }}</p>
           <p><i class="mdi mdi-message-reply-text"></i></p>
         </div>
@@ -41,6 +42,7 @@ import { Task } from '../models/Task.js'
 import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
 import { tasksService } from "../services/TasksService.js";
+import { sprintsService } from "../services/SprintsService.js";
 
 export default {
   props: { taskProp: { type: Task, required: true } },
@@ -79,6 +81,16 @@ export default {
           Pop.error(error)
         }
       },
+
+      async setActives() {
+        try {
+          let task = props.taskProp
+          await tasksService.setActiveTask(task.id)
+          await sprintsService.setActiveSprint(task.sprintId)
+        } catch (error) {
+          Pop.error(error)
+        }
+      }
 
 
 

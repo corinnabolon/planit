@@ -26,6 +26,11 @@ class TasksService {
     AppState.tasks.splice(taskIndex, 1, updatedTask)
 }
 
+setActiveTask(taskId) {
+    let foundTask = AppState.tasks.find(task => task.id == taskId)
+    AppState.activeTask = foundTask
+}
+
 }
 
 export const tasksService = new TasksService()
