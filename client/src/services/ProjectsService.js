@@ -4,6 +4,7 @@ import { logger } from "../utils/Logger.js";
 import { api } from "./AxiosService.js";
 import { Sprint } from "../models/Sprint.js";
 import { Task } from "../models/Task.js"
+import { Note } from "../models/Note.js"
 
 class ProjectsService {
 
@@ -50,6 +51,11 @@ class ProjectsService {
   async getTasksByProjectId(projectId) {
     const res = await api.get(`api/projects/${projectId}/tasks/`)
     AppState.tasks = res.data.map(taskPojo => new Task(taskPojo))
+  }
+
+  async getNotes(projectId) {
+    const res = await api.get(`api/projects/${projectId}/notes`)
+    AppState.notes = res.data.map(notePojo => new Note(notePojo))
   }
 
   async removeProject(projectId) {

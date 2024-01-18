@@ -52,11 +52,16 @@ export default {
     const router = useRouter()
     const watchableProjectId = computed(() => route.params.projectId)
 
+    onMounted(() => {
+      getProjects()
+    })
+
     watch(watchableProjectId, () => {
       clearDataForProjectPage()
       getProjectById(watchableProjectId.value)
       getSprintsByProjectId(watchableProjectId.value)
       getTasksByProjectId(watchableProjectId.value)
+      getNotesByProjectId(watchableProjectId.value)
       getProjects()
     },
       { immediate: true }
@@ -100,6 +105,14 @@ export default {
     async function getTasksByProjectId(projectId) {
       try {
         await projectsService.getTasksByProjectId(projectId)
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
+    async function getNotesByProjectId(projectId) {
+      try {
+        await projectsService.getNotes(projectId)
       } catch (error) {
         Pop.error(error)
       }

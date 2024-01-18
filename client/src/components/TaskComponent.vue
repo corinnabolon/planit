@@ -43,6 +43,7 @@ import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
 import { tasksService } from "../services/TasksService.js";
 import { sprintsService } from "../services/SprintsService.js";
+import { projectsService } from "../services/ProjectsService.js";
 
 export default {
   props: { taskProp: { type: Task, required: true } },
