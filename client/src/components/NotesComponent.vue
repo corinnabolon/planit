@@ -2,7 +2,7 @@
   <div class="offcanvas offcanvas-end" tabindex="-1" id="notesOffcanvas" aria-labelledby="notesOffcanvas">
     <div class="offcanvas-header">
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      <!-- <p v-if="sprintNumber" class="fs-5">S{{ sprintNumber + 1 }}</p> -->
+      <p v-if="sprintNumber" class="fs-5">S{{ sprintNumber + 1 }}</p>
       <p v-if="activeSprint">{{ activeSprint.name }} ></p>
       <p v-if="activeTask">{{ activeTask.name }}</p>
       <p><i class="mdi mdi-pencil"></i></p>
@@ -32,7 +32,7 @@
 
 <script>
 import { AppState } from '../AppState';
-import { computed, reactive, onMounted, ref } from 'vue';
+import { computed, reactive, onMounted, ref, watch } from 'vue';
 import Pop from "../utils/Pop.js";
 import { notesService } from "../services/NotesService.js";
 import { logger } from "../utils/Logger.js";
@@ -46,17 +46,24 @@ export default {
       editable,
       activeSprint: computed(() => AppState.activeSprint),
       activeTask: computed(() => AppState.activeTask),
-      notes: computed(() => AppState.notes),
-      // notes: computed(() => {
-      //   let notesPerTask = []
-      //   AppState.notes.forEach((note) => {
-      //     if (note.taskId == AppState.activeTask.id) {
-      //       notesPerTask.push(note)
-      //     }
-      //   })
-      //   return notesPerTask
-      // }),
-      // sprintNumber: computed(() => AppState.sprints.findIndex((sprint) => sprint.id == AppState.activeSprint.id)),
+      notes: computed(() => {
+        let notesPerTask = []
+        if (AppState.notes.length && AppState.activeTask) {
+          AppState.notes.forEach((note) => {
+            if (note.taskId == AppState.activeTask.id) {
+              notesPerTask.push(note)
+            }
+          })
+          return notesPerTask
+        }
+        return AppState.notes
+      }),
+      sprintNumber: computed(() => {
+        if (AppState.sprints.length && AppState.activeSprint) {
+          return AppState.sprints.findIndex((sprint) => sprint.id == AppState.activeSprint.id)
+        }
+        return null
+      }),
 
       async submitNote() {
         try {
