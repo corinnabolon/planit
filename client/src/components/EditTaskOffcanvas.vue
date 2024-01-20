@@ -1,5 +1,5 @@
 <template>
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="notesOffcanvas" aria-labelledby="notesOffcanvas">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="editTaskOffcanvas" aria-labelledby="editTaskOffcanvas">
     <div class="offcanvas-header">
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       <p v-if="sprintNumber" class="fs-5">S{{ sprintNumber + 1 }}</p>
@@ -22,8 +22,14 @@
           <button class="btn btn-primary" type="submit"><i class="mdi mdi-send"></i></button>
         </div>
       </form>
-      <div v-for="note in notes" :key="note.id">
-        {{ note.body }}
+      <div v-for="note in notes" :key="note.id" class="note-border rounded my-2 mx-1 px-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <img :src="note.creator.picture" alt="Creator picture" class="rounded-circle creator-image my-1">
+          <p class="mb-3">{{ note.creator.name }}</p>
+        </div>
+        <div>
+          <p class="mb-3">{{ note.body }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -36,6 +42,7 @@ import { computed, reactive, onMounted, ref, watch } from 'vue';
 import Pop from "../utils/Pop.js";
 import { notesService } from "../services/NotesService.js";
 import { logger } from "../utils/Logger.js";
+import { Note } from "../models/Note.js"
 
 
 export default {
@@ -87,5 +94,13 @@ export default {
 textarea {
   height: 10rem;
   width: 75%;
+}
+
+.creator-image {
+  height: 3rem;
+}
+
+.note-border {
+  border: 1px solid magenta;
 }
 </style>

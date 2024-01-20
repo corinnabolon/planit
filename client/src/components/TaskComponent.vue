@@ -5,7 +5,8 @@
         value="" id="flexCheckDefault" :key="checkboxKey">
       <div :class="[taskProp.isComplete ? 'vl-success' : 'vl-danger']"></div>
     </div>
-    <div class="col-6 fs-5">
+    <div @click="setActives" class="col-6 fs-5" type="button" data-bs-toggle="offcanvas"
+      data-bs-target="#editTaskOffcanvas" aria-controls="editTaskOffcanvas">
       <div class="d-flex">
         <p class="rounded-pill text-light px-3" :class="[taskProp.isComplete ? 'bg-secondary' : 'bg-danger']">{{
           taskProp.name
@@ -17,8 +18,7 @@
         <p>Created - {{ taskProp.createdAt.toDateString() }}</p>
       </div>
       <div class="d-flex mb-5">
-        <div @click="setActives" class="d-flex" type="button" data-bs-toggle="offcanvas" data-bs-target="#notesOffcanvas"
-          aria-controls="notesOffcanvas">
+        <div class="d-flex">
           <p>{{ notes.length }}</p>
           <p><i class="mdi mdi-message-reply-text"></i></p>
         </div>
