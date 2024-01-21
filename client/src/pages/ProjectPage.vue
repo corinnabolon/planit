@@ -56,6 +56,7 @@ export default {
       getProjects()
     })
 
+
     watch(watchableProjectId, () => {
       clearDataForProjectPage()
       getProjectById(watchableProjectId.value)

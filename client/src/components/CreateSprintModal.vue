@@ -10,8 +10,8 @@
           <div class="d-flex justify-content-around">
             <div class="col-5 mb-3">
               <label for="sprintName" class="form-label">Sprint Name</label>
-              <input v-model="editable.name" type="text" class="form-control" id="taskName" aria-describedby="sprintName"
-                maxlength="50" minlength="1">
+              <input v-model="editable.name" type="text" class="form-control" id="sprintTame"
+                aria-describedby="sprintName" maxlength="50" minlength="1">
             </div>
           </div>
           <div class="d-flex justify-content-end mb-3 me-3">

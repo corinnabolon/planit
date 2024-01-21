@@ -8,7 +8,6 @@
   <ProjectListComponent />
   <CreateTaskModal />
   <CreateSprintModal />
-  <NotesComponent />
   <EditTaskOffcanvas />
 </template>
 
