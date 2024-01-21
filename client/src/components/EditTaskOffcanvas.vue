@@ -41,7 +41,7 @@
       </div>
     </div>
     <div v-else>
-      <form @submit.prevent="editTask">
+      <form @submit.prevent="editTask()">
         <div class="col-11 ms-2 mb-3">
           <label for="name" class="form-label">Name</label>
           <input v-model="editableTask.name" type="text" class="form-control" id="taskName" maxlength="50" minlength="1">
@@ -60,23 +60,25 @@
               <p><i class="mdi mdi-run"></i></p>
             </div>
             <select v-model="editableTask.sprintId" class="form-select" aria-label="Default select example">
-              <option v-for="sprint in sprints" :key="sprint.id" :value="sprint">{{ sprints.indexOf(sprint) + 1 }} {{
+              <option v-for="sprint in sprints" :key="sprint.id" :value="sprint.id">{{ sprints.indexOf(sprint) + 1 }} {{
                 sprint.name }}
               </option>
             </select>
           </div>
-          <p class="ms-2 mt-3">Status</p>
-          <div class="mt-1 d-flex justify-content-center">
-            <!-- <button @click="setToIncomplete" class="btn rounded-pill"
-              :class="[editableTask.isComplete ? 'btn-success' : 'btn-success-outline']">Pending</button>
-            <button @click="setToComplete" class="btn rounded-pill"
-              :class="[editableTask.isComplete ? 'btn-success-outline' : 'btn-success']">Done</button> -->
-            <!-- <button @click="toggleStatus('pending')" class="btn rounded-pill"
-              :class="{ 'active': status === 'pending' }">Pending</button>
-            <button @click="toggleStatus('done')" class="btn rounded-pill"
-              :class="{ 'active': status === 'done' }">Done</button> -->
+          <div>
+            <p class="ms-2 mt-3">Status</p>
+            <div class="mt-1 d-flex justify-content-center">
+              <button type="button" @click="toggleStatus('pending')" class="btn rounded-pill status-btn"
+                :class="{ 'pending': status === 'pending' }">Pending</button>
+              <button type="button" @click="toggleStatus('done')" class="btn rounded-pill status-btn"
+                :class="{ 'done': status === 'done' }">Done</button>
+            </div>
           </div>
-
+          <div class="d-flex justify-content-end mt-3">
+            <button type="button" class="btn btn-danger me-2" data-bs-dismiss="offcanvas"
+              aria-label="Cancel">Close</button>
+            <button type="submit" class="btn btn-success me-2">Save</button>
+          </div>
 
         </section>
       </form>
@@ -109,6 +111,8 @@ import Pop from "../utils/Pop.js";
 import { notesService } from "../services/NotesService.js";
 import { logger } from "../utils/Logger.js";
 import { Note } from "../models/Note.js"
+import { tasksService } from "../services/TasksService.js"
+import { Offcanvas } from "bootstrap";
 
 
 export default {
@@ -118,27 +122,66 @@ export default {
     let wantsToSeeEditScreen = ref(false)
     let editableTask = ref({ ...AppState.activeTask })
     const getActiveTask = () => AppState.activeTask;
+    let isComplete = ref(false);
+    let status = ref(isComplete.value ? 'done' : 'pending');
+    //The above getActiveTask is a getter function used to get the current state of AppState.activeTask--an arrow function with the return value of AppState.activeTask
+    //assigning the function a variable encapsulates the logic of obtaining AppState.activeTask
+
+    //TODO: reset isComplete if offCanvas is closed without the change being sent to the API
 
     onMounted(() => {
-      let editTaskOffcanvasElem = document.getElementById("editTaskOffcanvas")
-      editTaskOffcanvasElem.addEventListener('show.bs.offcanvas', function (event) {
+      let editTaskOffCanvasElem = document.getElementById('editTaskOffcanvas')
+      editTaskOffCanvasElem.addEventListener('hidden.bs.offcanvas', function (event) {
+        getActiveTask()
         editableTask.value = { ...AppState.activeTask };
-        logger.log("Triggered")
+        if (AppState.activeTask && 'isComplete' in AppState.activeTask) {
+          isComplete.value = AppState.activeTask.isComplete;
+          status.value = isComplete.value ? 'done' : 'pending'
+        }
       })
     })
 
 
     watch(() => getActiveTask(),
+      //We are watching the result of getActiveTask (which points to AppState.activeTask) to respond to changes in it by performing the following code--when AppState.activeTask changes, the watch is triggered, and it used nextTick to wait for the DOM (data representation of the objects) update cycle, and after that update cycle the editableTask ref is updated to the current value
       async (newActiveTask) => {
+        //newActiveTask is a parameter representing the new value returned by the getter getActiveTask--the watch function is passing getActiveTask (and thus AppState.activeTask) through as an argument
         await nextTick();
+        // nextTick is a Vue function which schedules a callback to be run after the next DOM cycle--performs operations after the DOM has been updated, ensuring that changes are reflected.  We await it to be sure that the DOM is consistant and is needed because getting the activeTask from the API is asyncronous
         editableTask.value = { ...newActiveTask };
+        if (newActiveTask && 'isComplete' in newActiveTask) {
+          isComplete.value = newActiveTask.isComplete;
+          status.value = isComplete.value ? 'done' : 'pending'
+        }
+        // isComplete.value = AppState.activeTask.isComplete;
+        // status.value = newActiveTask.isComplete ? 'done' : 'pending';
         logger.log("Triggered, AppState.activeTask", AppState.activeTask)
       },
       { immediate: true }
     );
 
+    //more explanation:
+    //This is specific to Vue's watch function:
+    // When you use the version of watch with a getter function as the first argument, the callback function will indeed receive the new value of the watched expression as its first parameter. <--in this case it is a getter getting a getter
+    // watch(() => getActiveTask(), async (newActiveTask) => { ... }):
+
+    // The watch function takes two arguments: the first one is the getter function, and the second is the callback function.
+    // Getter Function () => getActiveTask():
+
+    // This is a getter function that returns the current value of AppState.activeTask.
+    // Whenever the value returned by this getter function changes (due to changes in AppState.activeTask), the watch function triggers the callback.
+    // Callback Function async (newActiveTask) => { ... }:
+
+    // The callback function is executed whenever the value returned by the getter function changes.
+    // newActiveTask is a parameter representing the new value returned by the getter function. This parameter holds the latest value of AppState.activeTask.
+    // So, to sum it up, changes in getActiveTask() trigger the callback function, and the new value (which is the latest value of AppState.activeTask) is passed as the argument (newActiveTask) to the callback function.
+
+    // This mechanism allows you to react to changes in a reactive source, and the argument of the callback represents the new value of that source after the change. If you have any more questions or need further clarification, feel free to ask!
+
 
     return {
+      status,
+      isComplete,
       wantsToSeeEditScreen,
       editable,
       editableTask,
@@ -163,8 +206,6 @@ export default {
         return null
       }),
       sprints: computed(() => AppState.sprints),
-      isComplete: false,
-      status: '',
 
       async submitNote() {
         try {
@@ -180,10 +221,33 @@ export default {
         wantsToSeeEditScreen.value = true
       },
 
-      // toggleStatus(selectedStatus) {
-      //   this.isComplete = selectedStatus === 'done';
-      //   this.status = selectedStatus;
-      // },
+      toggleStatus(selectedStatus) {
+        logger.log("Current isComplete", this.isComplete)
+        if (selectedStatus == this.status) {
+          return;
+        }
+        this.status = selectedStatus;
+        this.isComplete = selectedStatus === 'done';
+        logger.log("Current isComplete", this.isComplete)
+      },
+
+      //TODO: let people delete their notes
+
+      async editTask() {
+        try {
+          let wantsToSaveChanges = await Pop.confirm("Are you sure you want to edit the details of this task?")
+          if (!wantsToSaveChanges) {
+            return
+          }
+          let taskData = editableTask.value
+          taskData.isComplete = this.isComplete
+          await tasksService.editTask(taskData)
+          Pop.success("Task edited!")
+          Offcanvas.getOrCreateInstance('#editTaskOffcanvas').hide()
+        } catch (error) {
+          Pop.error(error)
+        }
+      }
 
 
 
@@ -207,8 +271,26 @@ textarea {
   border: 1px solid magenta;
 }
 
-button.active {
+// button.active {
+//   background-color: #3498db;
+//   color: #fff;
+// }
+
+.status-btn {
+  padding: 10px 15px;
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.status-btn.pending {
   background-color: #3498db;
+  color: #fff;
+}
+
+.status-btn.done {
+  background-color: #2ecc71;
   color: #fff;
 }
 </style>

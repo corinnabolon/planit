@@ -24,12 +24,22 @@ class TasksService {
     logger.log(updatedTask)
     const taskIndex = AppState.tasks.findIndex(task => updatedTask.id == task.id)
     AppState.tasks.splice(taskIndex, 1, updatedTask)
-}
+  }
 
-setActiveTask(taskId) {
+  async editTask(taskData) { 
+    logger.log("taskData", taskData)
+    const res = await api.put(`api/tasks/${taskData.id}`, taskData)
+    const updatedTask = new Task(res.data)
+    AppState.activeTask = updatedTask
+    let updatedTaskIndex = AppState.tasks.findIndex(task => task.id == taskData.id)
+    AppState.tasks.splice(updatedTaskIndex, 1, updatedTask)
+    
+  }
+
+  setActiveTask(taskId) {
     let foundTask = AppState.tasks.find(task => task.id == taskId)
     AppState.activeTask = foundTask
-}
+  }
 
 }
 
