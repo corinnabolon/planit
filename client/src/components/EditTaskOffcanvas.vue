@@ -30,10 +30,14 @@
           <button class="btn btn-primary" type="submit"><i class="mdi mdi-send"></i></button>
         </div>
       </form>
-      <div v-for="note in notes" :key="note.id" class="note-border rounded my-2 mx-1 px-2">
+      <div v-for="note in notes" :key="note.id" class="comment-box rounded my-2 mx-1 px-2">
         <div class="d-flex justify-content-between align-items-center">
-          <img :src="note.creator.picture" alt="Creator picture" class="rounded-circle creator-image my-1">
-          <p class="mb-3">{{ note.creator.name }}</p>
+          <div class="d-flex justify-content-start align-items-center">
+            <img :src="note.creator.picture" alt="Creator picture" class="rounded-circle creator-image my-1">
+            <p class="mb-0 ms-3">{{ note.creator.name }}</p>
+          </div>
+          <p @click="deleteNote(`${note.id}`)" v-if="note.creator.id == account.id" role="button"
+            title="Delete this comment"><i class="mdi mdi-delete"></i></p>
         </div>
         <div>
           <p class="mb-3">{{ note.body }}</p>
@@ -115,6 +119,7 @@ import { tasksService } from "../services/TasksService.js"
 import { Offcanvas } from "bootstrap";
 
 
+
 export default {
 
   setup() {
@@ -185,6 +190,7 @@ export default {
       wantsToSeeEditScreen,
       editable,
       editableTask,
+      account: computed(() => AppState.account),
       activeSprint: computed(() => AppState.activeSprint),
       activeTask: computed(() => AppState.activeTask),
       notes: computed(() => {
@@ -247,6 +253,18 @@ export default {
         } catch (error) {
           Pop.error(error)
         }
+      },
+
+      async deleteNote(noteId) {
+        try {
+          let wantsToDelete = await Pop.confirm("Are you sure you want to delete this note?")
+          if (!wantsToDelete) {
+            return
+          }
+          await notesService.deleteNote(noteId)
+        } catch (error) {
+          Pop.error(error)
+        }
       }
 
 
@@ -263,18 +281,14 @@ textarea {
   width: 75%;
 }
 
-.creator-image {
-  height: 3rem;
-}
-
-.note-border {
+.comment-box {
+  width: 75%;
   border: 1px solid magenta;
 }
 
-// button.active {
-//   background-color: #3498db;
-//   color: #fff;
-// }
+.creator-image {
+  height: 3rem;
+}
 
 .status-btn {
   padding: 10px 15px;

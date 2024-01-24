@@ -19,6 +19,12 @@ class NotesService {
     AppState.notes.push(new Note(res.data))
   }
 
+  async deleteNote(noteId) {
+    const res = await api.delete(`api/notes/${noteId}`)
+    let noteIndex = AppState.notes.findIndex(note => note.id == noteId)
+    AppState.notes.splice(noteIndex, 1)
+  }
+
 
 
 }
