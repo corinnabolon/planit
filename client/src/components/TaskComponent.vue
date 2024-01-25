@@ -5,13 +5,13 @@
         value="" id="flexCheckDefault" :key="checkboxKey">
       <div :class="[taskProp.isComplete ? 'vl-success' : 'vl-danger']"></div>
     </div>
-    <div @click="setActives" class="col-6 fs-5" type="button" data-bs-toggle="offcanvas"
-      data-bs-target="#editTaskOffcanvas" aria-controls="editTaskOffcanvas">
+    <div @click="setActives" class="col-6 fs-5" type="button">
       <div class="d-flex">
         <p class="rounded-pill text-light px-3" :class="[taskProp.isComplete ? 'bg-secondary' : 'bg-danger']">{{
           taskProp.name
         }}</p>
-        <p><i class="mdi mdi-trash-can-outline ms-4" title="Delete task"></i></p>
+        <p v-if="taskProp.creatorId == account.id" @click.stop="removeTask(taskProp.id)"><i
+            class="mdi mdi-trash-can-outline ms-4" title="Delete task"></i></p>
       </div>
       <div class="d-flex">
         <p><i class="mdi mdi-run me-4"></i></p>
@@ -44,6 +44,7 @@ import Pop from "../utils/Pop.js";
 import { tasksService } from "../services/TasksService.js";
 import { sprintsService } from "../services/SprintsService.js";
 import { projectsService } from "../services/ProjectsService.js";
+import { Offcanvas } from "bootstrap";
 
 export default {
   props: { taskProp: { type: Task, required: true } },
@@ -59,6 +60,7 @@ export default {
     return {
       isChecked,
       checkboxKey,
+      account: computed(() => AppState.account),
 
       notes: computed(() => {
         let notesPerTask = []
@@ -88,6 +90,19 @@ export default {
           let task = props.taskProp
           await tasksService.setActiveTask(task.id)
           await sprintsService.setActiveSprint(task.sprintId)
+          Offcanvas.getOrCreateInstance('#editTaskOffcanvas').show()
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+
+      async removeTask(taskId) {
+        try {
+          let wantsToDelete = await Pop.confirm("Do you want to delete this task and its associated notes?")
+          if (!wantsToDelete) {
+            return
+          }
+          await tasksService.removeTask(taskId)
         } catch (error) {
           Pop.error(error)
         }

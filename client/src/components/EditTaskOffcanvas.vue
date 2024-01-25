@@ -36,8 +36,8 @@
             <img :src="note.creator.picture" alt="Creator picture" class="rounded-circle creator-image my-1">
             <p class="mb-0 ms-3">{{ note.creator.name }}</p>
           </div>
-          <p @click="deleteNote(`${note.id}`)" v-if="note.creator.id == account.id" role="button"
-            title="Delete this comment"><i class="mdi mdi-delete"></i></p>
+          <p @click="removeNote(note.id)" v-if="note.creator.id == account.id" role="button" title="Delete this comment">
+            <i class="mdi mdi-delete"></i></p>
         </div>
         <div>
           <p class="mb-3">{{ note.body }}</p>
@@ -255,13 +255,13 @@ export default {
         }
       },
 
-      async deleteNote(noteId) {
+      async removeNote(noteId) {
         try {
           let wantsToDelete = await Pop.confirm("Are you sure you want to delete this note?")
           if (!wantsToDelete) {
             return
           }
-          await notesService.deleteNote(noteId)
+          await notesService.removeNote(noteId)
         } catch (error) {
           Pop.error(error)
         }

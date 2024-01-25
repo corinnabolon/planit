@@ -32,8 +32,13 @@ class TasksService {
     const updatedTask = new Task(res.data)
     AppState.activeTask = updatedTask
     let updatedTaskIndex = AppState.tasks.findIndex(task => task.id == taskData.id)
-    AppState.tasks.splice(updatedTaskIndex, 1, updatedTask)
-    
+    AppState.tasks.splice(updatedTaskIndex, 1, updatedTask)  
+  }
+
+  async removeTask(taskId) {
+    const res = await api.delete(`api/tasks/${taskId}`)
+    let taskIndex = AppState.tasks.findIndex(task => task.id == taskId)
+    AppState.tasks.splice(taskIndex, 1)
   }
 
   setActiveTask(taskId) {
