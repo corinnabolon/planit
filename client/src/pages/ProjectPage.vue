@@ -12,11 +12,14 @@
       <div class="col-11">
         <div v-if="project" class="d-flex align-items-center mt-3">
           <div>
-            {{ project.name }} {{ project.id }}
+            <p class="mb-0 fs-1">{{ project.name }}</p>
           </div>
-          <button class="btn btn-success ms-5" v-if="project.creatorId == account.id" @click="removeProject">Delete
-            Project</button>
+          <p v-if="project.creatorId == account.id" @click="removeProject" class="mb-0 ms-2 fs-1" role="button"
+            title="Delete this project">
+            <i class="mdi mdi-delete-forever"></i>
+          </p>
         </div>
+        <p v-if="project" class="fs-5">{{ project.description }}</p>
         <section class="row">
           <div class="col-12 d-flex justify-content-between my-5">
             <div>
@@ -31,7 +34,6 @@
             <SprintComponent :sprintProp="sprint" />
           </div>
         </section>
-        <p class="text-danger">Last edited project: {{ lastEditedProject }}</p>
       </div>
     </section>
   </div>

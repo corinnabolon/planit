@@ -1,6 +1,7 @@
 <template>
-  <div class="d-flex justify-content-between fs-4">
+  <div class="d-flex justify-content-between fs-3">
     <p v-if="sprints">S{{ sprintNumber + 1 }} - {{ sprintProp.name }}</p>
+    <p v-if="tasks">{{ tasksWeight }}<i class="mdi mdi-weight"></i></p>
     <div class="d-flex">
       <p @click="setActiveSprint(`${sprintProp.id}`)" role="button" data-bs-toggle="modal"
         data-bs-target="#createTaskModal" class="me-4">Add Task</p>
@@ -37,6 +38,15 @@ export default {
           }
         })
         return tasksPerSprint
+      }),
+      tasksWeight: computed(() => {
+        let totalTaskWeight = 0
+        AppState.tasks.forEach((task) => {
+          if (task.sprintId == props.sprintProp.id) {
+            totalTaskWeight += task.weight
+          }
+        })
+        return totalTaskWeight
       }),
 
       completedTasks: computed(() => {

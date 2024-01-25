@@ -11,7 +11,7 @@
           taskProp.name
         }}</p>
         <p v-if="taskProp.creatorId == account.id" @click.stop="removeTask(taskProp.id)"><i
-            class="mdi mdi-trash-can-outline ms-4" title="Delete task"></i></p>
+            class="mdi mdi-delete-forever ms-4" title="Delete task"></i></p>
       </div>
       <div class="d-flex">
         <p><i class="mdi mdi-run me-4"></i></p>
