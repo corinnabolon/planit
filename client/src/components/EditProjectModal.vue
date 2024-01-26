@@ -35,6 +35,7 @@ import { computed, reactive, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Pop from "../utils/Pop.js";
 import { projectsService } from "../services/ProjectsService.js";
+import { Modal } from "bootstrap";
 
 export default {
   setup() {
@@ -65,6 +66,17 @@ export default {
     return {
       editable,
       projects,
+
+      async editProject() {
+        try {
+          let projectId = route.params.projectId
+          let projectData = editable.value
+          await projectsService.editProject(projectData, projectId)
+          Modal.getOrCreateInstance("#editProjectModal").hide()
+        } catch (error) {
+          Pop.error(error)
+        }
+      }
     }
   }
 };

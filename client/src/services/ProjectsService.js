@@ -67,6 +67,16 @@ class ProjectsService {
     AppState.projects.splice(foundProject, 1)
     logger.log("Projects array after splicing", AppState.projects)
   }
+
+  async editProject(projectData, projectId) {
+    const res = await api.put(`api/projects/${projectId}`, projectData)
+    let projectIndex = AppState.projects.findIndex(project => project.id == projectId)
+    if (!projectIndex) {
+      return
+    }
+    AppState.projects.splice(projectIndex, 1, new Project(res.data))
+    AppState.project = new Project(res.data)
+  }
   
   clearDataForProjectPage() {
     AppState.project = null
