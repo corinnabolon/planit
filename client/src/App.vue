@@ -9,6 +9,7 @@
   <CreateTaskModal />
   <CreateSprintModal />
   <EditTaskOffcanvas />
+  <EditProjectModal />
 </template>
 
 <script>
@@ -19,6 +20,7 @@ import ProjectListComponent from './components/ProjectListComponent.vue'
 import CreateTaskModal from "./components/CreateTaskModal.vue"
 import CreateSprintModal from "./components/CreateSprintModal.vue"
 import EditTaskOffcanvas from "./components/EditTaskOffcanvas.vue"
+import EditProjectModal from "./components/EditProjectModal.vue"
 
 export default {
   setup() {
@@ -26,7 +28,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar, ProjectListComponent, CreateTaskModal, CreateSprintModal, EditTaskOffcanvas }
+  components: { Navbar, ProjectListComponent, CreateTaskModal, CreateSprintModal, EditTaskOffcanvas, EditProjectModal }
 }
 </script>
 <style lang="scss">

@@ -2,12 +2,7 @@
   <div class="container-fluid">
     <section class="row">
       <div class="col-1">
-        <div v-if="account.id">
-          <button class="btn btn-primary fs-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectOffcanvas"
-            aria-controls="projectOffcanvas">
-            P
-          </button>
-        </div>
+        <SideMenu />
       </div>
       <div class="col-11">
         <!-- //Basic account info here? -->

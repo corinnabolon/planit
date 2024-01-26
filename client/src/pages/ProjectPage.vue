@@ -1,13 +1,8 @@
 <template>
   <div class="container-fluid">
     <section class="row">
-      <div class="col-1">
-        <div v-if="account.id">
-          <button class="btn btn-primary fs-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectOffcanvas"
-            aria-controls="projectOffcanvas">
-            P
-          </button>
-        </div>
+      <div class="col-1 mt-3 ps-0">
+        <SideMenu />
       </div>
       <div class="col-11">
         <div v-if="project" class="d-flex align-items-center mt-3">
