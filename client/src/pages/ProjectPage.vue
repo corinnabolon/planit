@@ -25,7 +25,7 @@
           </div>
         </section>
         <section class="row">
-          <div v-for="sprint in sprints" :key="sprint.id" class="col-12 px-1">
+          <div v-for="sprint in sprints" :key="sprint.id" class="col-12 px-1 mb-3 sprint-border">
             <SprintComponent :sprintProp="sprint" />
           </div>
         </section>
@@ -145,4 +145,8 @@ export default {
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.sprint-border {
+  border: 2px solid pink;
+}
+</style>

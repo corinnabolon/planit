@@ -51,9 +51,9 @@ export default {
           let taskData = editable.value
           taskData.sprintId = sprintId
           taskData.projectId = route.params.projectId
+          Modal.getOrCreateInstance("#createTaskModal").hide()
           await tasksService.createTask(taskData)
           Pop.success("Task created")
-          Modal.getOrCreateInstance("#createTaskModal").hide()
           editable.value = {}
         } catch (error) {
           Pop.error(error)

@@ -10,7 +10,7 @@
         <p class="rounded-pill text-light px-3" :class="[taskProp.isComplete ? 'bg-secondary' : 'bg-danger']">{{
           taskProp.name
         }}</p>
-        <p v-if="taskProp.creatorId == account.id" @click.stop="removeTask(taskProp.id)"><i
+        <p v-if="taskProp.creatorId == account.id" @click.stop="removeTask(taskProp)"><i
             class="mdi mdi-delete-forever ms-4" title="Delete task"></i></p>
       </div>
       <div class="d-flex">
@@ -96,13 +96,15 @@ export default {
         }
       },
 
-      async removeTask(taskId) {
+      async removeTask(taskData) {
         try {
           let wantsToDelete = await Pop.confirm("Do you want to delete this task and its associated notes?")
           if (!wantsToDelete) {
             return
           }
+          let taskId = taskData.id
           await tasksService.removeTask(taskId)
+          Pop.success(`${taskData.name} deleted!`)
         } catch (error) {
           Pop.error(error)
         }
