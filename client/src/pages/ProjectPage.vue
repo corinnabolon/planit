@@ -32,6 +32,15 @@
       </div>
     </section>
   </div>
+
+  <ModalComponent :modalId="'createSprintModal'">
+    <template #modalTitle>
+      <p class="modal-title fs-5" id="createSprint">Create a Sprint</p>
+    </template>
+    <template #modalBody>
+      <CreateSprintForm />
+    </template>
+  </ModalComponent>
 </template>
 
 
@@ -42,6 +51,8 @@ import { useRoute, useRouter } from 'vue-router';
 import Pop from "../utils/Pop.js";
 import { projectsService } from "../services/ProjectsService.js";
 import { logger } from "../utils/Logger.js";
+import ModalComponent from '../components/ModalComponent.vue';
+import CreateSprintForm from "../components/CreateSprintForm.vue";
 
 export default {
   setup() {
@@ -140,7 +151,8 @@ export default {
 
 
     }
-  }
+  },
+  components: { ModalComponent, CreateSprintForm }
 };
 </script>
 

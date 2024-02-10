@@ -7,7 +7,6 @@
   </main>
   <ProjectListComponent />
   <CreateTaskModal />
-  <CreateSprintModal />
   <EditTaskOffcanvas />
   <EditProjectModal />
 </template>
@@ -18,9 +17,9 @@ import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
 import ProjectListComponent from './components/ProjectListComponent.vue'
 import CreateTaskModal from "./components/CreateTaskModal.vue"
-import CreateSprintModal from "./components/CreateSprintModal.vue"
 import EditTaskOffcanvas from "./components/EditTaskOffcanvas.vue"
 import EditProjectModal from "./components/EditProjectModal.vue"
+import ModalComponent from './components/ModalComponent.vue';
 
 export default {
   setup() {
@@ -28,7 +27,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar, ProjectListComponent, CreateTaskModal, CreateSprintModal, EditTaskOffcanvas, EditProjectModal }
+  components: { Navbar, ProjectListComponent, CreateTaskModal, EditTaskOffcanvas, EditProjectModal }
 }
 </script>
 <style lang="scss">

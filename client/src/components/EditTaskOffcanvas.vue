@@ -181,7 +181,7 @@ export default {
     // newActiveTask is a parameter representing the new value returned by the getter function. This parameter holds the latest value of AppState.activeTask.
     // So, to sum it up, changes in getActiveTask() trigger the callback function, and the new value (which is the latest value of AppState.activeTask) is passed as the argument (newActiveTask) to the callback function.
 
-    // This mechanism allows you to react to changes in a reactive source, and the argument of the callback represents the new value of that source after the change. If you have any more questions or need further clarification, feel free to ask!
+    // This mechanism allows you to react to changes in a reactive source, and the argument of the callback represents the new value of that source after the change.
 
 
     return {
