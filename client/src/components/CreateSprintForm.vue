@@ -1,11 +1,4 @@
 <template>
-  <!-- <div class="modal fade" id="createSprintModal" tabindex="-1" aria-labelledby="createTaskModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="createSprint">Create a Sprint</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div> -->
   <form @submit.prevent="createSprint()">
     <div class="d-flex justify-content-around">
       <div class="col-12 mb-3">
@@ -18,9 +11,6 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
-  <!-- </div>
-    </div>
-  </div> -->
 </template>
 
 

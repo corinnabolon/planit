@@ -41,6 +41,24 @@
       <CreateSprintForm />
     </template>
   </ModalComponent>
+
+  <ModalComponent :modalId="'createTaskModal'">
+    <template #modalTitle>
+      <p class="modal-title fs-5" id="createTask">Create a Task</p>
+    </template>
+    <template #modalBody>
+      <CreateTaskForm />
+    </template>
+  </ModalComponent>
+
+  <ModalComponent :modalId="'editProjectModal'">
+    <template #modalTitle>
+      <p class="modal-title fs-5" id="editProject">Edit Project</p>
+    </template>
+    <template #modalBody>
+      <EditProjectForm />
+    </template>
+  </ModalComponent>
 </template>
 
 
@@ -53,6 +71,8 @@ import { projectsService } from "../services/ProjectsService.js";
 import { logger } from "../utils/Logger.js";
 import ModalComponent from '../components/ModalComponent.vue';
 import CreateSprintForm from "../components/CreateSprintForm.vue";
+import CreateTaskForm from "../components/CreateTaskForm.vue";
+import EditProjectForm from "../components/EditProjectForm.vue";
 
 export default {
   setup() {
@@ -152,7 +172,7 @@ export default {
 
     }
   },
-  components: { ModalComponent, CreateSprintForm }
+  components: { ModalComponent, CreateSprintForm, CreateTaskForm, EditProjectForm }
 };
 </script>
 
