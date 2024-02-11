@@ -9,19 +9,33 @@
       <p class="mb-0"><i class="mdi mdi-cog"></i></p>
     </div>
   </div>
+
+  <OffCanvasComponent :offCanvasId="'projectOffCanvas'">
+    <template #offCanvasTitle>
+      <p class="fs-5 offcanvas-title" id="projectOffcanvasLabel">Projects</p>
+      <p>for {{ account.email }}</p>
+    </template>
+    <template #offCanvasBody>
+      <ProjectListComponent />
+    </template>
+  </OffCanvasComponent>
 </template>
 
 
 <script>
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
+import OffCanvasComponent from "./OffCanvasComponent.vue";
+import ProjectListComponent from "./ProjectListComponent.vue";
+
 export default {
   setup() {
     return {
       account: computed(() => AppState.account)
 
     }
-  }
+  },
+  components: { OffCanvasComponent, ProjectListComponent }
 };
 </script>
 

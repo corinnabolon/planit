@@ -5,7 +5,6 @@
   <main>
     <router-view />
   </main>
-  <ProjectListComponent />
   <EditTaskOffcanvas />
 </template>
 
@@ -14,7 +13,7 @@ import { computed } from 'vue'
 import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
 import ProjectListComponent from './components/ProjectListComponent.vue'
-import EditTaskOffcanvas from "./components/EditTaskOffcanvas.vue"
+import EditTaskOffcanvas from './components/EditTaskOffcanvas.vue'
 
 export default {
   setup() {
@@ -22,7 +21,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar, ProjectListComponent, EditTaskOffcanvas }
+  components: { Navbar, EditTaskOffcanvas }
 }
 </script>
 <style lang="scss">

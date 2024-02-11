@@ -10,6 +10,16 @@
       </div>
     </section>
   </div>
+
+  <!-- <OffCanvasComponent :offCanvasId="'projectOffCanvas'">
+    <template #offCanvasTitle>
+      <p class="fs-5 offcanvas-title" id="projectOffcanvasLabel">Projects</p>
+        <p>for {{ account.email }}</p>
+    </template>
+    <template #offCanvasBody>
+      <ProjectListComponent />
+    </template>
+    </OffCanvasComponent> -->
 </template>
 
 <script>
@@ -19,6 +29,8 @@ import { projectsService } from "../services/ProjectsService.js"
 import { AppState } from "../AppState.js";
 import { logger } from "../utils/Logger.js";
 import { useRouter } from 'vue-router';
+// import OffCanvasComponent from "../components/OffCanvasComponent.vue";
+// import ProjectListComponent from "../components/ProjectListComponent.vue";
 
 
 export default {
@@ -65,7 +77,8 @@ export default {
       projects,
       defaultProject,
     }
-  }
+  },
+  // components: { OffCanvasComponent }
 }
 </script>
 
